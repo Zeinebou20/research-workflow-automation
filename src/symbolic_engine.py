@@ -1,4 +1,4 @@
-# type: ignore[import-untyped]
+import sympy as sp  # type: ignore[import-untyped]
 from sympy import Expr, Symbol, sin, diff
 
 def get_derivative_of_sin_x2(x: Symbol) -> Expr:
@@ -7,6 +7,6 @@ def get_derivative_of_sin_x2(x: Symbol) -> Expr:
     return df
 
 if __name__ == "__main__":
-    x_sym: Symbol = Symbol('x')
+    x_sym: Symbol = sp.symbols('x')
     derivative: Expr = get_derivative_of_sin_x2(x_sym)
-    print(f"المشتقة هي: {derivative}")
+    print(f": {derivative}")
