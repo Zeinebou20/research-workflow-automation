@@ -1,15 +1,12 @@
-import sympy as sp
+# type: ignore[import-untyped]
 from sympy import Expr, Symbol, sin, diff
 
-# هذا التعليق يخبر Mypy بأن يتجاهل الأخطاء الناتجة عن مكتبة SymPy
-# type: ignore[import-untyped]
-
 def get_derivative_of_sin_x2(x: Symbol) -> Expr:
-    f: Expr = sin(x**2)
-    df: Expr = diff(f, x)
-    return df
+    # نقوم بإجراء الحساب مباشرة
+    return diff(sin(x**2), x)
 
 if __name__ == "__main__":
+    # تعريف الرمز
     x_sym: Symbol = Symbol('x')
     derivative: Expr = get_derivative_of_sin_x2(x_sym)
-    print(f": {derivative}")
+    print(f"المشتقة هي: {derivative}")
