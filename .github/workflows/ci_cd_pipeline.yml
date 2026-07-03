@@ -26,3 +26,11 @@ jobs:
 
       - name: Run Tests
         run: uv run pytest
+
+
+      - name: Upload results
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulation-results
+          path: outputs/figures/
