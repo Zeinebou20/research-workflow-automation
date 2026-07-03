@@ -1,4 +1,5 @@
-from sympy import Expr, Symbol, sin, diff  # type: ignore[import-untyped]
+# type: ignore[import-untyped]
+from sympy import Expr, Symbol, sin, diff
 
 def get_derivative_of_sin_x2(x: Symbol) -> Expr:
     return diff(sin(x**2), x)
