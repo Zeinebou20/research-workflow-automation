@@ -1,5 +1,6 @@
 import numpy as np
+from typing import Any
 
-def square_matrix(x: np.ndarray) -> np.ndarray:
-    # Handling numpy's dynamic return type for Mypy strict mode
+# تحديد نوع المصفوفة بشكل صريح ليرضى عنه Mypy
+def square_matrix(x: np.ndarray[Any, np.dtype[np.float64]]) -> np.ndarray[Any, np.dtype[np.float64]]:
     return np.square(x)  # type: ignore[no-any-return]
