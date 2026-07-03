@@ -1,6 +1,7 @@
 import sympy as sp
+# type: ignore[import-untyped]
 
-def get_derivative_of_sin_x2():
+def get_derivative_of_sin_x2(x: Expr) -> Expr:
 
     x = sp.symbols('x')
     f = sp.sin(x**2)
