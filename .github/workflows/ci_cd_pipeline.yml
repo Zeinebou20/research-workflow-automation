@@ -9,28 +9,27 @@ on:
 jobs:
   validate-and-test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    
     steps:
       - name: Code Checkout
         uses: actions/checkout@v4
-
-      - name: Install uv (Package Manager)
+      
+      - name: Install uv
         uses: astral-sh/setup-uv@v3
         with:
           version: 'latest'
 
       - name: Set up Python
-        run: uv python install 3.12
-
-      - name: Install dependencies
-        run: uv sync
-
-      - name: Run Tests
-        run: uv run pytest
-
-
-      - name: Upload results
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: simulation-results
-          path: outputs/figures/
+        run: uv python install ${{ matrix.python-version }}
+        
+      - name: Static Analysis - Linting (Ruff)
+        run: uv run ruff check src/ tests/
+        
+      - name: Static Analysis - Type Checking (Mypy)
+        run: uv run mypy --strict src/
+        
+      - name: Execute Test Suite & Coverage (PyTest)
+        run: uv run pytest --cov=src --cov-report=xml tests/
