@@ -1,0 +1,14 @@
+numpy
+scipy
+sympy
+polars
+matplotlib
+seaborn
+plotly
+numba
+torch
+snakemake
+pytest
+pytest-cov
+ruff
+mypy

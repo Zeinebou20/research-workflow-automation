@@ -1,0 +1,28 @@
+[project]
+name = "phd_integrator_project"
+version = "0.1.0"
+description = "Calcul Symbolique et IA Scientifique Multi-GPU"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "scipy",
+    "sympy",
+    "polars",
+    "matplotlib",
+    "seaborn",
+    "plotly",
+    "numba",
+    "torch",
+    "snakemake",
+    "pytest",
+    "pytest-cov",
+    "ruff",
+    "mypy",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
