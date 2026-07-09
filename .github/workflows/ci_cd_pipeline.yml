@@ -13,4 +13,4 @@ jobs:
         run: |
           pip install sympy numpy-stubs mypy
       - name: Type Checking
-        run: mypy --strict src/
+        run: mypy --config-file mypy.ini src/
