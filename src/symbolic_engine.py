@@ -7,4 +7,4 @@ def get_derivative_of_sin_x2(x: Symbol) -> Expr:
 if __name__ == "__main__":
     x_sym: Symbol = Symbol('x')
     derivative: Expr = get_derivative_of_sin_x2(x_sym)
-    print(f"المشتقة هي: {derivative}")
+    print(f": {derivative}")
