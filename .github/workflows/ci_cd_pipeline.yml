@@ -11,6 +11,6 @@ jobs:
           python-version: '3.10'
       - name: Install dependencies
         run: |
-          pip install sympy numpy-stubs mypy
+          pip install sympy sympy mypy
       - name: Type Checking
         run: mypy --config-file mypy.ini src/
