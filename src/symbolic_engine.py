@@ -1,4 +1,4 @@
-# type: ignore[import-untyped]
+# mypy: disable-error-code="import-untyped"
 from sympy import Expr, Symbol, sin, diff
 
 def get_derivative_of_sin_x2(x: Symbol) -> Expr:
