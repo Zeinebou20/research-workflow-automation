@@ -12,7 +12,6 @@ from typing import Any, Callable, List, Sequence, Tuple, cast
 
 import numpy as np
 from numba import njit, prange
-from typing import Any
 
 use_numba = os.environ.get("USE_NUMBA", "True") == "True"
 
