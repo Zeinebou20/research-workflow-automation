@@ -1,0 +1,7 @@
+=== Analyse de stabilité (Module 5) ===
+
+n= 5 | kappa=4.77e+05 | err_alpha=1.93e-05 | borne_theorique=3.73e-02
+n=10 | kappa=1.60e+13 | err_alpha=5.28e-02 | borne_theorique=1.66e+06
+n=15 | kappa=3.68e+17 | err_alpha=3.84e+01 | borne_theorique=3.11e+10
+n=20 | kappa=1.32e+18 | err_alpha=2.26e+01 | borne_theorique=1.34e+11
+n=25 | kappa=1.33e+18 | err_alpha=7.66e+01 | borne_theorique=1.29e+11
