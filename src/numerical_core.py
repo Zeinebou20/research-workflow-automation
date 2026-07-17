@@ -69,7 +69,17 @@ def vectorized_residual(
     nu: float,
     func_f: Callable[..., object],
 ) -> np.ndarray:
-    """Applique la fonction résiduelle f par broadcasting (sans boucle for)."""
+    """Applique la fonction résiduelle f par broadcasting (sans boucle for).
+
+    Garde-fou runtime : x et t doivent être des ndarray. Passer un autre type
+    (p. ex. un chemin str au lieu des coordonnées chargées) lève TypeError —
+    verrou de régression complémentaire au typage statique de mypy.
+    """
+    if not isinstance(x, np.ndarray) or not isinstance(t, np.ndarray):
+        raise TypeError(
+            "vectorized_residual attend des np.ndarray pour x et t, "
+            f"reçu ({type(x).__name__}, {type(t).__name__})."
+        )
     return np.asarray(func_f(x, t, c, nu), dtype=np.float64)
 
 
@@ -90,10 +100,9 @@ def main() -> None:
     X, T = make_discretization_grid(args.n_points)
     grid = np.stack([X, T], axis=0)
 
-    # Évaluation du résidu physique sur les coordonnées ingérées
-    sensor_path: str = args.sensors
+    # Évaluation du résidu physique sur la grille de discrétisation (ndarray)
     _, f_func = symbolic_advection_diffusion()
-    residual = vectorized_residual(sensor_path, sensor_path, 1.0, 0.05, f_func)
+    residual = vectorized_residual(X, T, 1.0, 0.05, f_func)
     print(f"Résidu moyen : {float(np.abs(residual).mean()):.4e}")
 
     import os

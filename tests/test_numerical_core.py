@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 import numpy as np
 import polars as pl
+import pytest
 
 from src.numerical_core import (
     explore_ndarray_properties,
@@ -58,6 +59,12 @@ def test_vectorized_residual_broadcast():
     t = np.array([0.0, 0.5, 1.0])
     result = vectorized_residual(x, t, 1.0, 0.1, lambda x, t, c, nu: c * x + nu * t)
     np.testing.assert_allclose(result, 1.0 * x + 0.1 * t)
+
+
+def test_vectorized_residual_rejects_non_array():
+    """Cas limite (régression défi CI/CD 9.2) : une str au lieu d'un ndarray lève TypeError."""
+    with pytest.raises(TypeError):
+        vectorized_residual("bad_path", "bad_path", 1.0, 0.05, lambda x, t, c, nu: x)
 
 
 def test_main_saves_grid(tmp_path):
