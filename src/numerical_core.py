@@ -75,7 +75,7 @@ def vectorized_residual(
     (p. ex. un chemin str au lieu des coordonnées chargées) lève TypeError —
     verrou de régression complémentaire au typage statique de mypy.
     """
-    if not isinstance(x, np.ndarray[Any, Any]) or not isinstance(t, np.ndarray[Any, Any]):
+    if not isinstance(x, np.ndarray) or not isinstance(t, np.ndarray):
         raise TypeError(
             "vectorized_residual attend des np.ndarray pour x et t, "
             f"reçu ({type(x).__name__}, {type(t).__name__})."
