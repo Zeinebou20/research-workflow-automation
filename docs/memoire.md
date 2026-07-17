@@ -278,6 +278,47 @@ tests + couverture (pytest)**. Une **matrice** valide le code sur Python 3.10, 3
 En cas de succès, les artéfacts scientifiques (`outputs/figures/`, `models/`) sont publiés via
 `actions/upload-artifact`.
 
+### 9.3 Défi CI/CD — validation expérimentale (Exercice 9.2)
+
+Conformément à l'Exercice 9.2, on a provoqué **volontairement** une défaillance du pipeline pour
+vérifier que la barrière `mypy` bloque effectivement une régression de typage *avant* toute exécution
+coûteuse. Le scénario a été rejoué sur la branche `feat/residual-pipeline-entrypoint`, puis intégré à
+`main` par *pull request*.
+
+**1. Introduction de l'erreur** — commit `feat(core): evaluate physics residual in the ingestion entry point`.
+Le point d'accès `numerical_core.main()` passe par erreur le *chemin* du fichier capteur (une `str`) à
+`vectorized_residual`, dont la signature attend un `np.ndarray`.
+
+**2. Blocage en CI à l'étape `mypy`** — `ruff` passe (exit 0), `mypy --strict` échoue (exit 1) :
+
+```
+src/numerical_core.py:96: error: Argument 1 to "vectorized_residual" has incompatible type
+    "str"; expected "ndarray[...]"  [arg-type]
+src/numerical_core.py:96: error: Argument 2 to "vectorized_residual" has incompatible type
+    "str"; expected "ndarray[...]"  [arg-type]
+Found 2 errors in 1 file (checked 8 source files)
+```
+
+> **Note méthodologique.** Un premier essai passant directement `args.sensors` n'était **pas** détecté :
+> les attributs d'un `argparse.Namespace` sont typés `Any`, compatible avec tout type. Il a fallu
+> matérialiser la `str` dans une variable explicitement typée (`sensor_path: str`) pour que le contrôle
+> statique la rejette — illustration concrète de la portée *et des limites* du typage graduel.
+
+**3. Correction + test de régression** — commit `fix(core): guard vectorized_residual against non-ndarray inputs`.
+Trois mesures :
+- le résidu est désormais évalué sur la grille de discrétisation `(X, T)`, qui sont des `ndarray` ;
+- un **garde-fou runtime** lève `TypeError` si `x`/`t` ne sont pas des `ndarray` (défense en profondeur,
+  au-delà du seul contrôle statique) ;
+- le test unitaire `test_vectorized_residual_rejects_non_array` **verrouille ce cas limite** contre toute
+  réapparition.
+
+La chaîne complète repasse au vert : `ruff` ✅ · `mypy --strict` ✅ · `pytest` ✅ (56 tests).
+
+Ce cycle **rouge → vert** démontre que la CI remplit son rôle : aucune régression de typage ne peut
+atteindre `main`, garantissant qu'une simulation de plusieurs heures ne sera jamais lancée sur un code
+au contrat de types rompu. Les messages respectent la norme *Conventional Commits*
+(`feat:` / `fix:` / `chore:`).
+
 ---
 
 ## 10. Réponses aux questions théoriques
