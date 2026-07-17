@@ -41,14 +41,14 @@ def make_discretization_grid(
     n_points: int = 100,
     x_range: tuple[float, float] = (0.0, 1.0),
     t_range: tuple[float, float] = (0.0, 1.0),
-) -> tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray[Any, Any], np.ndarray[Any, Any]]:
     """Construit la grille spatio-temporelle (X, T) de discrétisation."""
     x = np.linspace(x_range[0], x_range[1], n_points)
     t = np.linspace(t_range[0], t_range[1], n_points)
     return np.meshgrid(x, t)
 
 
-def process_massive_data(file_path: str) -> np.ndarray:
+def process_massive_data(file_path: str) -> np.ndarray[Any, Any]:
     """Exercice 4.2 : scan lazy Polars d'un CSV/Parquet, extraction des coords valides."""
     df = (
         pl.scan_parquet(file_path)
@@ -63,19 +63,19 @@ def process_massive_data(file_path: str) -> np.ndarray:
 
 
 def vectorized_residual(
-    x: np.ndarray,
-    t: np.ndarray,
+    x: np.ndarray[Any, Any],
+    t: np.ndarray[Any, Any],
     c: float,
     nu: float,
     func_f: Callable[..., object],
-) -> np.ndarray:
+) -> np.ndarray[Any, Any]:
     """Applique la fonction résiduelle f par broadcasting (sans boucle for).
 
     Garde-fou runtime : x et t doivent être des ndarray. Passer un autre type
     (p. ex. un chemin str au lieu des coordonnées chargées) lève TypeError —
     verrou de régression complémentaire au typage statique de mypy.
     """
-    if not isinstance(x, np.ndarray) or not isinstance(t, np.ndarray):
+    if not isinstance(x, np.ndarray[Any, Any]) or not isinstance(t, np.ndarray[Any, Any]):
         raise TypeError(
             "vectorized_residual attend des np.ndarray pour x et t, "
             f"reçu ({type(x).__name__}, {type(t).__name__})."
