@@ -12,6 +12,7 @@ from typing import Any, Callable, List, Sequence, Tuple, cast
 
 import numpy as np
 from numba import njit, prange
+from typing import Any
 
 use_numba = os.environ.get("USE_NUMBA", "True") == "True"
 
@@ -29,10 +30,10 @@ _decorator: Callable[[Kernel], Kernel] = (
 
 
 @_decorator
-def heavy_computation_optimized(grid: np.ndarray) -> np.ndarray:
+def heavy_computation_optimized(grid:np.ndarray[Any, Any]) -> np.ndarray[Any, Any]:
     """Opérateur de filtrage local : result[i, j] = sin(grid) + cos(grid)."""
     n, m = grid.shape
-    result: np.ndarray = np.zeros((n, m))
+    result: np.ndarray[Any, Any] = np.zeros((n, m))
 
     for i in prange(n):  # type: ignore[no-untyped-call, attr-defined]
         for j in range(m):
@@ -41,9 +42,9 @@ def heavy_computation_optimized(grid: np.ndarray) -> np.ndarray:
     return result
 
 
-def heavy_computation_numpy(grid: np.ndarray) -> np.ndarray:
+def heavy_computation_numpy(grid: np.ndarray[Any, Any]) -> np.ndarray[Any, Any]:
     """Référence NumPy vectorisée pour comparaison de performance."""
-    return cast(np.ndarray, np.sin(grid) + np.cos(grid))
+    return cast(np.ndarray[Any, Any], np.sin(grid) + np.cos(grid))
 
 
 def profile_computation(size: int = 400) -> str:
@@ -76,7 +77,7 @@ def profile_computation(size: int = 400) -> str:
     return report
 
 
-def _simulate_param(params: Tuple[float, float], grid: np.ndarray) -> float:
+def _simulate_param(params: Tuple[float, float], grid: np.ndarray[Any, Any]) -> float:
     """Simulation pure-NumPy pour un couple (c, nu) : norme d'un champ résiduel."""
     c, nu = params
     field = np.sin(c * grid) - nu * np.cos(grid)

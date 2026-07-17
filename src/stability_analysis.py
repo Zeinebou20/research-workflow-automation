@@ -10,6 +10,7 @@ import argparse
 
 import numpy as np
 from scipy.linalg import hilbert
+from typing import Any
 
 
 def condition_number(n: int) -> float:
@@ -17,21 +18,21 @@ def condition_number(n: int) -> float:
     return float(np.linalg.cond(hilbert(n)))
 
 
-def compute_residual(A: np.ndarray, alpha: np.ndarray, b: np.ndarray) -> float:
+def compute_residual(A: np.ndarray[Any, Any], alpha: np.ndarray[Any, Any], b: np.ndarray[Any, Any]) -> float:
     """Résidu strict r = ‖A·α − b‖₂ (Exercice 5.1.4)."""
     return float(np.linalg.norm(A @ alpha - b))
 
 
 def solve_and_validate(
-    A: np.ndarray, b: np.ndarray, dtype: type, atol: float, rtol: float
-) -> tuple[np.ndarray, bool]:
+    A:np.ndarray[Any, Any], b: np.ndarray[Any, Any], dtype: type, atol: float, rtol: float
+) -> tuple[np.ndarray[Any, Any], bool]:
     """Résout le système dans la précision `dtype` et valide via np.isclose.
 
     L'égalité stricte (==) est proscrite car les erreurs d'arrondi IEEE 754 rendent
     Aα rarement exactement égal à b ; np.isclose avec (atol, rtol) adaptés est robuste.
     """
-    A_dt: np.ndarray = A.astype(dtype)
-    b_dt: np.ndarray = b.astype(dtype)
+    A_dt: np.ndarray[Any, Any] = A.astype(dtype)
+    b_dt: np.ndarray[Any, Any] = b.astype(dtype)
     # numpy.linalg ne supporte pas float16 : on résout en float64 puis on projette
     # dans la précision cible pour observer la perte de précision (Exercice 5.1.2).
     solve_dtype = np.float64 if dtype == np.float16 else dtype
@@ -39,7 +40,7 @@ def solve_and_validate(
     with np.errstate(over="ignore", invalid="ignore"):
         # En précision réduite (float16), le débordement est attendu et signale
         # précisément l'instabilité — on le neutralise pour garder une sortie propre.
-        alpha: np.ndarray = alpha_full.astype(dtype)
+        alpha: np.ndarray[Any, Any] = alpha_full.astype(dtype)
         is_valid = bool(np.all(np.isclose(A_dt @ alpha, b_dt, atol=atol, rtol=rtol)))
     return alpha, is_valid
 

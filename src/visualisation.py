@@ -21,7 +21,7 @@ import torch  # noqa: E402
 
 from src.deep_pinn import PINN  # noqa: E402
 from src.symbolic_derivation import symbolic_advection_diffusion  # noqa: E402
-
+from typing import Any
 sns.set_theme(style="whitegrid", context="paper")
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
@@ -31,7 +31,7 @@ def get_inference(
     x_range: Tuple[float, float],
     t_range: Tuple[float, float],
     n_points: int = 100,
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+) -> Tuple[np.ndarray[Any, Any], np.ndarray[Any, Any], np.ndarray[Any, Any]]:
     """Évalue le PINN sur une grille (x, t) et retourne X, T et la prédiction."""
     if model is None:
         raise ValueError("Modèle invalide")
@@ -49,7 +49,7 @@ def get_inference(
     return X, T, prediction.numpy()
 
 
-def exact_solution(X: np.ndarray, T: np.ndarray, c: float = 1.0) -> np.ndarray:
+def exact_solution(X: np.ndarray[Any, Any], T: np.ndarray[Any, Any], c: float = 1.0) -> np.ndarray[Any, Any]:
     """Solution manufacturée exacte u(x, t) = tanh(x - c*t)."""
     u_func, _ = symbolic_advection_diffusion()
     return np.asarray(u_func(X, T, c, 1.0), dtype=np.float64)
