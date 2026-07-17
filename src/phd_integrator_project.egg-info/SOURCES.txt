@@ -1,9 +1,0 @@
-pyproject.toml
-src/__init__.py
-src/numerical_core.py
-src/phd_integrator_project.egg-info/PKG-INFO
-src/phd_integrator_project.egg-info/SOURCES.txt
-src/phd_integrator_project.egg-info/dependency_links.txt
-src/phd_integrator_project.egg-info/requires.txt
-src/phd_integrator_project.egg-info/top_level.txt
-tests/test_core.py
