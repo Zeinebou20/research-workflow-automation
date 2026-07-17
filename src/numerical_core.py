@@ -12,6 +12,8 @@ from typing import Callable
 import numpy as np
 import polars as pl
 
+from src.symbolic_derivation import symbolic_advection_diffusion
+
 
 def explore_ndarray_properties() -> np.ndarray:
     """Exercice 4.1 : explore shape/dtype/strides, contiguïté C/F et vues vs copies."""
@@ -87,6 +89,12 @@ def main() -> None:
 
     X, T = make_discretization_grid(args.n_points)
     grid = np.stack([X, T], axis=0)
+
+    # Évaluation du résidu physique sur les coordonnées ingérées
+    sensor_path: str = args.sensors
+    _, f_func = symbolic_advection_diffusion()
+    residual = vectorized_residual(sensor_path, sensor_path, 1.0, 0.05, f_func)
+    print(f"Résidu moyen : {float(np.abs(residual).mean()):.4e}")
 
     import os
 
