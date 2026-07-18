@@ -12,6 +12,7 @@ dependencies = [
     "seaborn",
     "plotly",
     "numba",
+    "joblib",
     "torch",
     "snakemake",
     "pytest",

@@ -1,0 +1,20 @@
+# Configuration du pipeline scientifique (TP 2)
+
+simulation:
+  n_points: 100
+  x_start: 0
+  x_end: 1
+  t_start: 0
+  t_end: 1
+  c: 1.0
+  nu: 0.05
+
+pinn:
+  epochs: 200
+
+output:
+  figure: "outputs/figures/solution_surface.pdf"
+  interactive: "outputs/figures/visualisation_pinn_interactive.html"
+  grid: "data/processed_grid.npy"
+  reference: "outputs/reference.npz"
+  stability_report: "outputs/stability_report.txt"
