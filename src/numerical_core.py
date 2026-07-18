@@ -7,7 +7,7 @@ du terme source résiduel sur la grille de discrétisation.
 from __future__ import annotations
 
 import argparse
-from typing import Any, Callable, cast, tuple 
+from typing import Any, Callable, cast
 
 import numpy as np
 import polars as pl
