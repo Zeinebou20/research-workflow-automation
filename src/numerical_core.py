@@ -7,7 +7,7 @@ du terme source résiduel sur la grille de discrétisation.
 from __future__ import annotations
 
 import argparse
-from typing import Any, Callable
+from typing import Any, Callable, cast, Tuple
 
 import numpy as np
 import polars as pl
@@ -15,7 +15,7 @@ import polars as pl
 from src.symbolic_derivation import symbolic_advection_diffusion
 
 
-def explore_ndarray_properties() -> np.ndarray:
+def explore_ndarray_properties() -> np.ndarray[Any, Any]:
     """Exercice 4.1 : explore shape/dtype/strides, contiguïté C/F et vues vs copies."""
     N, M = 100, 50
     grid = np.zeros((N, M), dtype=np.float64)
@@ -45,7 +45,7 @@ def make_discretization_grid(
     """Construit la grille spatio-temporelle (X, T) de discrétisation."""
     x = np.linspace(x_range[0], x_range[1], n_points)
     t = np.linspace(t_range[0], t_range[1], n_points)
-    return np.meshgrid(x, t)
+    return cast(tuple[np.ndarray[Any, Any], np.ndarray[Any, Any]], np.meshgrid(x, t))
 
 
 def process_massive_data(file_path: str) -> np.ndarray[Any, Any]:
